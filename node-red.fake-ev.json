@@ -1,0 +1,1272 @@
+[
+    {
+        "id": "7dd5f86a.aa4588",
+        "type": "tab",
+        "label": "Fake EV",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "fa0dec8f.9db45",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "Inclusion report",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 175,
+        "y": 83,
+        "wires": [
+            [
+                "34b76af6.154f26"
+            ]
+        ]
+    },
+    {
+        "id": "c8cd2001.623e8",
+        "type": "mqtt out",
+        "z": "7dd5f86a.aa4588",
+        "name": "zwave.local",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "59389aee.ef3e74",
+        "x": 1071,
+        "y": 109,
+        "wires": []
+    },
+    {
+        "id": "8d9ca0df.2df96",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "Exclusion report",
+        "topic": "",
+        "payload": "number1",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 175,
+        "y": 161,
+        "wires": [
+            [
+                "c7d05b42.191628"
+            ]
+        ]
+    },
+    {
+        "id": "888935.5cbd26c8",
+        "type": "mqtt in",
+        "z": "7dd5f86a.aa4588",
+        "name": " Adapter: pt:j1/mt:cmd/rt:ad/rn:nodered_ev/ad:1/#",
+        "topic": "pt:j1/mt:cmd/rt:ad/rn:nodered_ev/ad:1/#",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "59389aee.ef3e74",
+        "x": 233,
+        "y": 304,
+        "wires": [
+            [
+                "ccfc3ad4.386708"
+            ]
+        ]
+    },
+    {
+        "id": "5b9bb237.66353c",
+        "type": "mqtt in",
+        "z": "7dd5f86a.aa4588",
+        "name": "device:  pt:j1/+/rt:dev/rn:nodered_ev/ad:1/#",
+        "topic": "pt:j1/+/rt:dev/rn:nodered_ev/ad:1/#",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "59389aee.ef3e74",
+        "x": 201,
+        "y": 599,
+        "wires": [
+            [
+                "ecffe1f9.e5ac1"
+            ]
+        ]
+    },
+    {
+        "id": "4c03202d.b850f",
+        "type": "function",
+        "z": "7dd5f86a.aa4588",
+        "name": "create inclusion report",
+        "func": "var service_name = \"nodered_ev\";\nvar address = \"number1\";\nvar now = new Date().toISOString();\n\n\nmsg.topic = \"pt:j1/mt:evt/rt:ad/rn:\"+service_name+\"/ad:1\";\nvar inc_report = {\n  \"type\": \"evt.thing.inclusion_report\",\n  \"serv\": service_name,\n  \"val_t\": \"object\",\n  \"val\": {\n    \"integr_id\": \"\",\n    \"address\": address,\n    \"type\": \"\",\n    \"product_hash\": \"node_red_ev_number1\",\n    \"alias\": \"Node Red changer 1\",\n    \"comm_tech\": \"cloud\",\n    \"product_id\": \"\",\n    \"product_name\": \"Node-red Charger\",\n    \"manufacturer_id\": \"node-red\",\n    \"device_id\": address,\n    \"hw_ver\": \"1\",\n    \"sw_ver\": \"1\",\n    \"power_source\": \"ac\",\n    \"wakeup_interval\": \"-1\",\n    \"security\": \"\",\n    \"tags\": null,\n    \"groups\": [\n      \"1\"\n    ],\n    \"prop_set\": null,\n    \"tech_specific_props\": null,\n    \"services\": [\n      {\n        \"name\": \"chargepoint\",\n        \"alias\": \"ev charger\",\n        \"address\": \"/rt:dev/rn:\"+service_name+\"/ad:1/sv:chargepoint/ad:\"+address,\n        \"enabled\": true,\n        \"groups\": [\n          \"1\"\n        ],\n        \"props\": {\n          \"sup_modes\": [\n            \"start\",\n            \"stop\",\n            \"pause\",\n            \"resume\"\n          ],\n          \"sup_states\": [\n            \"available\",\n            \"preparing\",\n            \"charging\",\n            \"paused\",\n            \"finished\",\n            \"unknown\"\n          ]\n        },\n        \"tags\": null,\n        \"prop_set_ref\": \"\",\n        \"interfaces\": [\n          {\n            \"intf_t\": \"cmd.mode.set\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"string\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"cmd.mode.get_report\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"null\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"evt.mode.report\",\n            \"msg_t\": \"out\",\n            \"val_t\": \"string\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"cmd.state.get_report\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"null\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"evt.state.report\",\n            \"msg_t\": \"out\",\n            \"val_t\": \"string\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"cmd.smart_charge.set\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"bool\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"cmd.smart_charge.get_report\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"null\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"evt.smart_charge.report\",\n            \"msg_t\": \"out\",\n            \"val_t\": \"bool\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"cmd.cable_lock.set\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"bool\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"cmd.cable_lock.get_report\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"null\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"evt.cable_lock.report\",\n            \"msg_t\": \"out\",\n            \"val_t\": \"string\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"evt.error.report\",\n            \"msg_t\": \"out\",\n            \"val_t\": \"string\",\n            \"ver\": \"1\"\n          }\n        ]\n      },\n      {\n        \"name\": \"meter_elec\",\n        \"alias\": \"meter elec\",\n        \"address\": \"/rt:dev/rn:\"+service_name+\"/ad:1/sv:meter_elec/ad:\"+address,\n        \"enabled\": true,\n        \"groups\": [\n          \"1\"\n        ],\n        \"props\": {\n          \"sup_units\": [\n            \"W\",\n            \"kWh\",\n            \"V\",\n            \"A\"\n          ]\n        },\n        \"tags\": null,\n        \"prop_set_ref\": \"\",\n        \"interfaces\": [\n          {\n            \"intf_t\": \"cmd.meter.get_report\",\n            \"msg_t\": \"in\",\n            \"val_t\": \"null\",\n            \"ver\": \"1\"\n          },\n          {\n            \"intf_t\": \"evt.meter.report\",\n            \"msg_t\": \"out\",\n            \"val_t\": \"float\",\n            \"ver\": \"1\"\n          }\n        ]\n      }\n    ]\n  },\n  \"tags\": null,\n  \"props\": null,\n  \"ver\": \"1\",\n  \"corid\": \"\",\n  \"src\": \"node-red\",\n  \"ctime\": now,\n  \"uid\": msg.uuid\n};\n\nflow.set(\"meter_report.enabled\", true);\n\nmsg.payload = inc_report;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 687,
+        "y": 101,
+        "wires": [
+            [
+                "c8cd2001.623e8",
+                "24bfc7d7.d26108"
+            ]
+        ]
+    },
+    {
+        "id": "c54520ba.ba0da",
+        "type": "function",
+        "z": "7dd5f86a.aa4588",
+        "name": "create exclusion report",
+        "func": "var service_name = \"nodered_ev\";\nvar address = msg.payload || \"number1\";\nvar now = new Date().toISOString();\n\n\nmsg.topic = \"pt:j1/mt:evt/rt:ad/rn:\"+service_name+\"/ad:1\";\nvar exclusion_report = {\n  \"serv\": service_name,\n  \"type\": \"evt.thing.exclusion_report\",\n  \"val_t\": \"object\",\n  \"val\": {\n    \"address\": address\n  },\n  \"props\": null,\n  \"tags\": null,\n  \"src\": \"node-red\",\n  \"ver\": \"1\",\n  \"ctime\": now,\n  \"uid\": msg.uuid\n};\n\nflow.set(\"meter_report.enabled\", false);\nmsg.payload = exclusion_report;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 688,
+        "y": 142,
+        "wires": [
+            [
+                "c8cd2001.623e8",
+                "24bfc7d7.d26108"
+            ]
+        ]
+    },
+    {
+        "id": "24bfc7d7.d26108",
+        "type": "debug",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1053,
+        "y": 166,
+        "wires": []
+    },
+    {
+        "id": "3594c064.2faf7",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "service",
+        "property": "payload.serv",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "chargepoint",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "meter_elec",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 332,
+        "y": 658,
+        "wires": [
+            [
+                "3617dcac.6fcf24"
+            ],
+            [
+                "e423ba21.dc47b8"
+            ]
+        ]
+    },
+    {
+        "id": "3617dcac.6fcf24",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "chargepoint interface",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "cmd.mode.set",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "cmd.current_session.get_report",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "cmd.state.get_report",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "cmd.mode.get_report",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 595,
+        "y": 653,
+        "wires": [
+            [
+                "e7475eff.cdf22"
+            ],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "ccfc3ad4.386708",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "cmd.thing.get_inclusion_report",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "cmd.thing.delete",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 135,
+        "y": 243,
+        "wires": [
+            [
+                "21fedd4.ad7af22"
+            ],
+            [
+                "3c7de2aa.89786e"
+            ]
+        ]
+    },
+    {
+        "id": "e7475eff.cdf22",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "property": "payload.val",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "start",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "stop",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "pause",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "resume",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 789,
+        "y": 631,
+        "wires": [
+            [
+                "f24c02b2.a204d"
+            ],
+            [
+                "f24c02b2.a204d"
+            ],
+            [
+                "f24c02b2.a204d"
+            ],
+            [
+                "f24c02b2.a204d"
+            ]
+        ]
+    },
+    {
+        "id": "baeb535.5ec31b",
+        "type": "function",
+        "z": "7dd5f86a.aa4588",
+        "name": "create evt.mode.report message",
+        "func": "var service_name = \"chargepoint\";\nvar adapter = \"nodered_ev\";\nvar address = \"number1\";\nvar now = new Date().toISOString();\nvar corid = msg.payload.uid || \"\";\nvar mode = msg.payload.val || \"\";\n\nmsg.topic = \"pt:j1/mt:evt/rt:dev/rn:\"+adapter+\"/ad:1/sv:\"+service_name+\"/ad:\"+address;\n\nvar message = {\n    \"type\": \"evt.mode.report\",\n    \"serv\": service_name,\n    \"val_t\": \"string\",\n    \"val\": mode,\n    \"ver\": \"1\",\n    \"corid\": corid,\n    \"src\": adapter,\n    \"ctime\": now,\n    \"uid\": msg.uuid\n};\n\nmsg.payload = message;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 829,
+        "y": 791,
+        "wires": [
+            [
+                "24bfc7d7.d26108",
+                "c8cd2001.623e8"
+            ]
+        ]
+    },
+    {
+        "id": "34b76af6.154f26",
+        "type": "uuid",
+        "z": "7dd5f86a.aa4588",
+        "uuidVersion": "v4",
+        "namespaceType": "",
+        "namespace": "",
+        "namespaceCustom": "",
+        "name": "",
+        "field": "uuid",
+        "fieldType": "msg",
+        "x": 518,
+        "y": 102,
+        "wires": [
+            [
+                "4c03202d.b850f"
+            ]
+        ]
+    },
+    {
+        "id": "c7d05b42.191628",
+        "type": "uuid",
+        "z": "7dd5f86a.aa4588",
+        "uuidVersion": "v4",
+        "namespaceType": "",
+        "namespace": "",
+        "namespaceCustom": "",
+        "name": "",
+        "field": "uuid",
+        "fieldType": "msg",
+        "x": 517,
+        "y": 142,
+        "wires": [
+            [
+                "c54520ba.ba0da"
+            ]
+        ]
+    },
+    {
+        "id": "f24c02b2.a204d",
+        "type": "uuid",
+        "z": "7dd5f86a.aa4588",
+        "uuidVersion": "v4",
+        "namespaceType": "",
+        "namespace": "",
+        "namespaceCustom": "",
+        "name": "",
+        "field": "uuid",
+        "fieldType": "msg",
+        "x": 742,
+        "y": 744,
+        "wires": [
+            [
+                "baeb535.5ec31b"
+            ]
+        ]
+    },
+    {
+        "id": "b6215b75.736968",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "cmd.mode.set - start",
+        "topic": "",
+        "payload": "start",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 168,
+        "y": 407,
+        "wires": [
+            [
+                "f7dfdf96.ab8e8"
+            ]
+        ]
+    },
+    {
+        "id": "fdff6b29.55a808",
+        "type": "function",
+        "z": "7dd5f86a.aa4588",
+        "name": "cmd.mode.set with input",
+        "func": "var service_name = \"chargepoint\";\nvar adapter = \"nodered_ev\";\nvar address = \"number1\";\nvar now = new Date().toISOString();\n\nvar mode = msg.payload; \n\n\nmsg.topic = \"pt:j1/mt:cmd/rt:dev/rn:\"+adapter+\"/ad:1/sv:\"+service_name+\"/ad:\"+address;\nvar message = {\n    \"type\": \"cmd.mode.set\",\n    \"serv\": service_name,\n    \"val_t\": \"string\",\n    \"val\": mode,\n    \"tags\": null,\n    \"props\": null,\n    \"ver\": \"1\",\n    \"corid\": \"\",\n    \"resp_to\": \"\",\n    \"src\": adapter,\n    \"ctime\": now,\n    \"uid\": msg.uuid\n}\nmsg.payload = message;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 672,
+        "y": 394,
+        "wires": [
+            [
+                "c8cd2001.623e8"
+            ]
+        ]
+    },
+    {
+        "id": "f7dfdf96.ab8e8",
+        "type": "uuid",
+        "z": "7dd5f86a.aa4588",
+        "uuidVersion": "v4",
+        "namespaceType": "",
+        "namespace": "",
+        "namespaceCustom": "",
+        "name": "",
+        "field": "uuid",
+        "fieldType": "msg",
+        "x": 486,
+        "y": 396,
+        "wires": [
+            [
+                "fdff6b29.55a808"
+            ]
+        ]
+    },
+    {
+        "id": "7b9d51fe.d3783",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "cmd.mode.set - stop",
+        "topic": "",
+        "payload": "stop",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 170,
+        "y": 445,
+        "wires": [
+            [
+                "f7dfdf96.ab8e8"
+            ]
+        ]
+    },
+    {
+        "id": "ded080cb.3360d",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "cmd.mode.set - resume",
+        "topic": "",
+        "payload": "resume",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 173,
+        "y": 482,
+        "wires": [
+            [
+                "f7dfdf96.ab8e8"
+            ]
+        ]
+    },
+    {
+        "id": "c953a8d8.730348",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "cmd.mode.set - pause",
+        "topic": "",
+        "payload": "pause",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 173,
+        "y": 518,
+        "wires": [
+            [
+                "f7dfdf96.ab8e8"
+            ]
+        ]
+    },
+    {
+        "id": "ecffe1f9.e5ac1",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "message type",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "mt:cmd",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "mt:evt",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 137,
+        "y": 665,
+        "wires": [
+            [
+                "3594c064.2faf7"
+            ],
+            [
+                "56c92aeb.2f4c14"
+            ]
+        ]
+    },
+    {
+        "id": "e002a97.dbab458",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "evt.state.report - available",
+        "topic": "",
+        "payload": "available",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 176,
+        "y": 884,
+        "wires": [
+            [
+                "138011c7.cc5d5e"
+            ]
+        ]
+    },
+    {
+        "id": "138011c7.cc5d5e",
+        "type": "uuid",
+        "z": "7dd5f86a.aa4588",
+        "uuidVersion": "v4",
+        "namespaceType": "",
+        "namespace": "",
+        "namespaceCustom": "",
+        "name": "",
+        "field": "uuid",
+        "fieldType": "msg",
+        "x": 563,
+        "y": 884,
+        "wires": [
+            [
+                "dcc35d47.d4a4"
+            ]
+        ]
+    },
+    {
+        "id": "dcc35d47.d4a4",
+        "type": "function",
+        "z": "7dd5f86a.aa4588",
+        "name": "create evt.state.report message",
+        "func": "var service_name = \"chargepoint\";\nvar adapter = \"nodered_ev\";\nvar address = \"number1\";\nvar now = new Date().toISOString();\nvar corid = msg.payload.uid || \"\";\nvar state = msg.payload || \"\";\n\nmsg.topic = \"pt:j1/mt:evt/rt:dev/rn:\"+adapter+\"/ad:1/sv:\"+service_name+\"/ad:\"+address;\n\nvar message = {\n    \"type\": \"evt.state.report\",\n    \"serv\": service_name,\n    \"val_t\": \"string\",\n    \"val\": state,\n    \"ver\": \"1\",\n    \"corid\": corid,\n    \"src\": adapter,\n    \"ctime\": now,\n    \"uid\": msg.uuid\n};\n\nmsg.payload = message;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 770,
+        "y": 884,
+        "wires": [
+            [
+                "c8cd2001.623e8"
+            ]
+        ]
+    },
+    {
+        "id": "7e33c4d0.86559c",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "evt.state.report - preparing",
+        "topic": "",
+        "payload": "preparing",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 176,
+        "y": 922,
+        "wires": [
+            [
+                "138011c7.cc5d5e"
+            ]
+        ]
+    },
+    {
+        "id": "bf4689d7.81d998",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "evt.state.report - charging",
+        "topic": "",
+        "payload": "charging",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 174,
+        "y": 957,
+        "wires": [
+            [
+                "138011c7.cc5d5e"
+            ]
+        ]
+    },
+    {
+        "id": "4164d4be.327b8c",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "evt.state.report - finished",
+        "topic": "",
+        "payload": "finished",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 175,
+        "y": 993,
+        "wires": [
+            [
+                "138011c7.cc5d5e"
+            ]
+        ]
+    },
+    {
+        "id": "71e15ed1.3ccec",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "evt.state.report - unknown",
+        "topic": "",
+        "payload": "unknown",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 174,
+        "y": 1030,
+        "wires": [
+            [
+                "138011c7.cc5d5e"
+            ]
+        ]
+    },
+    {
+        "id": "3c7de2aa.89786e",
+        "type": "change",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.val.address",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 321,
+        "y": 249,
+        "wires": [
+            [
+                "c7d05b42.191628"
+            ]
+        ]
+    },
+    {
+        "id": "9984cd89.3009b",
+        "type": "inject",
+        "z": "7dd5f86a.aa4588",
+        "name": "evt.meter.report",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 171,
+        "y": 1120,
+        "wires": [
+            [
+                "12e60ce5.4bab63"
+            ]
+        ]
+    },
+    {
+        "id": "d9894fe4.c6fe1",
+        "type": "uuid",
+        "z": "7dd5f86a.aa4588",
+        "uuidVersion": "v4",
+        "namespaceType": "",
+        "namespace": "",
+        "namespaceCustom": "",
+        "name": "",
+        "field": "uuid",
+        "fieldType": "msg",
+        "x": 673,
+        "y": 1118,
+        "wires": [
+            [
+                "e9dfb424.613438"
+            ]
+        ]
+    },
+    {
+        "id": "e9dfb424.613438",
+        "type": "function",
+        "z": "7dd5f86a.aa4588",
+        "name": "create evt.meter.report",
+        "func": "var service_name = \"meter_elec\";\nvar adapter = \"nodered_ev\";\nvar address = \"number1\";\nvar type = \"evt.meter.report\";\nvar now = new Date().toISOString();\nvar corid = msg.payload.uid || \"\";\nvar watt = msg.payload || 0.0;\n\nmsg.topic = \"pt:j1/mt:evt/rt:dev/rn:\"+adapter+\"/ad:1/sv:\"+service_name+\"/ad:\"+address;\n\nvar message = {\n    \"type\": type,\n    \"serv\": service_name,\n    \"val_t\": \"float\",\n    \"val\": watt,\n    \"props\": {\n        \"unit\": \"W\"\n        \n    },\n    \"ver\": \"1\",\n    \"corid\": corid,\n    \"src\": adapter,\n    \"ctime\": now,\n    \"uid\": msg.uuid\n};\n\nmsg.payload = message;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 850,
+        "y": 1118,
+        "wires": [
+            [
+                "c8cd2001.623e8"
+            ]
+        ]
+    },
+    {
+        "id": "450a674d.5cbb18",
+        "type": "random",
+        "z": "7dd5f86a.aa4588",
+        "name": "random watt",
+        "low": "9000",
+        "high": "11000",
+        "inte": "false",
+        "property": "payload",
+        "x": 524,
+        "y": 1126,
+        "wires": [
+            [
+                "d9894fe4.c6fe1"
+            ]
+        ]
+    },
+    {
+        "id": "e423ba21.dc47b8",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "meter_elec interfaces",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "cmd.meter.get_report",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 522,
+        "y": 1056,
+        "wires": [
+            [
+                "450a674d.5cbb18"
+            ]
+        ]
+    },
+    {
+        "id": "47a3b6a.d4d2848",
+        "type": "ui_dropdown",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "label": "Change state",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "dd7163bb.9adac",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "options": [
+            {
+                "label": "Available",
+                "value": "available",
+                "type": "str"
+            },
+            {
+                "label": "Preparing",
+                "value": "preparing",
+                "type": "str"
+            },
+            {
+                "label": "Charging",
+                "value": "charging",
+                "type": "str"
+            },
+            {
+                "label": "Finished",
+                "value": "finished",
+                "type": "str"
+            },
+            {
+                "label": "Unknown",
+                "value": "unknown",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "",
+        "x": 516,
+        "y": 987,
+        "wires": [
+            [
+                "138011c7.cc5d5e"
+            ]
+        ]
+    },
+    {
+        "id": "7cb39486.e527dc",
+        "type": "ui_button",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "group": "dd7163bb.9adac",
+        "order": 1,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "Include",
+        "tooltip": "Send inclusion report",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 195,
+        "y": 47,
+        "wires": [
+            [
+                "34b76af6.154f26"
+            ]
+        ]
+    },
+    {
+        "id": "556f4223.80edec",
+        "type": "ui_button",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "group": "dd7163bb.9adac",
+        "order": 2,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "Exclude",
+        "tooltip": "Send exclusion report",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "number1",
+        "payloadType": "str",
+        "topic": "",
+        "x": 194,
+        "y": 124,
+        "wires": [
+            [
+                "c7d05b42.191628"
+            ]
+        ]
+    },
+    {
+        "id": "56c92aeb.2f4c14",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "service",
+        "property": "payload.serv",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "chargepoint",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "meter_elec",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 135,
+        "y": 789,
+        "wires": [
+            [
+                "e79a3b68.77b3d8"
+            ],
+            [
+                "ccb64e65.02c95"
+            ]
+        ]
+    },
+    {
+        "id": "e79a3b68.77b3d8",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "chargepoint interface",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "evt.state.report",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "evt.mode.report",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 266,
+        "y": 739,
+        "wires": [
+            [
+                "40526b88.5941d4"
+            ],
+            [
+                "d3a6135c.2247a"
+            ]
+        ]
+    },
+    {
+        "id": "40526b88.5941d4",
+        "type": "ui_text",
+        "z": "7dd5f86a.aa4588",
+        "group": "dd7163bb.9adac",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "Last state",
+        "label": "Last state",
+        "format": "{{msg.payload.val}}",
+        "layout": "row-spread",
+        "x": 449,
+        "y": 713,
+        "wires": []
+    },
+    {
+        "id": "21fedd4.ad7af22",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "Check address",
+        "property": "payload.val",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "number1",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 305,
+        "y": 206,
+        "wires": [
+            [
+                "34b76af6.154f26"
+            ]
+        ]
+    },
+    {
+        "id": "c4bc6e86.761a5",
+        "type": "comment",
+        "z": "7dd5f86a.aa4588",
+        "name": "Adapter things",
+        "info": "",
+        "x": 463,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "71de8477.d76dec",
+        "type": "ui_dropdown",
+        "z": "7dd5f86a.aa4588",
+        "name": "Change mode",
+        "label": "Change mode",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "dd7163bb.9adac",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "options": [
+            {
+                "label": "Start",
+                "value": "start",
+                "type": "str"
+            },
+            {
+                "label": "Stop",
+                "value": "stop",
+                "type": "str"
+            },
+            {
+                "label": "Resume",
+                "value": "resume",
+                "type": "str"
+            },
+            {
+                "label": "Pause",
+                "value": "pause",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "",
+        "x": 414,
+        "y": 509,
+        "wires": [
+            [
+                "f7dfdf96.ab8e8"
+            ]
+        ]
+    },
+    {
+        "id": "d3a6135c.2247a",
+        "type": "ui_text",
+        "z": "7dd5f86a.aa4588",
+        "group": "dd7163bb.9adac",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "Last mode",
+        "label": "Last mode",
+        "format": "{{msg.payload.val}}",
+        "layout": "row-spread",
+        "x": 461,
+        "y": 763,
+        "wires": []
+    },
+    {
+        "id": "b0db7e59.1e66e",
+        "type": "ui_switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "label": "Meter reports",
+        "tooltip": "Toggle meter reports",
+        "group": "dd7163bb.9adac",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 164,
+        "y": 1182,
+        "wires": [
+            [
+                "3fe5aa03.217bb6"
+            ]
+        ]
+    },
+    {
+        "id": "12e60ce5.4bab63",
+        "type": "function",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "func": "var enabled = flow.get(\"meter_report.enabled\");\n\nif (enabled) {\n    return msg;\n} else {\n    return null;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 335,
+        "y": 1126,
+        "wires": [
+            [
+                "450a674d.5cbb18"
+            ]
+        ]
+    },
+    {
+        "id": "3fe5aa03.217bb6",
+        "type": "change",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "meter_report.enabled",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 412,
+        "y": 1189,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "89c52a10.e62978",
+        "type": "ui_chart",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "group": "dd7163bb.9adac",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "label": "Power",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 583,
+        "y": 823,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ccb64e65.02c95",
+        "type": "switch",
+        "z": "7dd5f86a.aa4588",
+        "name": "meter_elec interface",
+        "property": "payload.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "evt.meter.report",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 174,
+        "y": 837,
+        "wires": [
+            [
+                "de0f1600.415178"
+            ]
+        ]
+    },
+    {
+        "id": "de0f1600.415178",
+        "type": "change",
+        "z": "7dd5f86a.aa4588",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.val",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 419,
+        "y": 827,
+        "wires": [
+            [
+                "89c52a10.e62978"
+            ]
+        ]
+    },
+    {
+        "id": "59389aee.ef3e74",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "zwave.local",
+        "broker": "192.168.100.253",
+        "port": "1884",
+        "clientid": "node-red-nuc",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "dd7163bb.9adac",
+        "type": "ui_group",
+        "z": "",
+        "name": "Fake EV",
+        "tab": "fe1d230e.4b749",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "fe1d230e.4b749",
+        "type": "ui_tab",
+        "z": "",
+        "name": "EV",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    }
+]
