@@ -1,0 +1,119 @@
+{
+    "Id": "G6g3dUCH1cW6GRQ",
+    "ClassId": "G6g3dUCH1cW6GRQ",
+    "Author": "",
+    "Version": 0,
+    "CreatedAt": "2020-03-23T12:35:17.638647299+01:00",
+    "UpdatedAt": "2020-03-23T12:43:15.056398988+01:00",
+    "Name": "Virtual siren",
+    "Group": "virtual-device",
+    "Description": "",
+    "Nodes": [
+      {
+        "Id": "1",
+        "Type": "trigger",
+        "Label": "mode ctrl",
+        "SuccessTransition": "3",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:siren_ctrl/ad:G6g3dUCH1cW6GRQ_0",
+        "Service": "siren_ctrl",
+        "ServiceInterface": "cmd.mode.set",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": "string"
+          },
+          "ValueJPath": "",
+          "ValueJPathResultType": "",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_modes": [
+              "on",
+              "off",
+              "fire",
+              "CO"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 139,
+          "y": 159
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "2",
+        "Type": "action",
+        "Label": "Send repsponse",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:siren_ctrl/ad:G6g3dUCH1cW6GRQ_0",
+        "Service": "siren_ctrl",
+        "ServiceInterface": "evt.mode.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": "",
+            "ValueType": ""
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": true,
+          "ResponseToTopic": "",
+          "VariableName": "",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 100,
+          "y": 622
+        },
+        "TypeAlias": "Action"
+      },
+      {
+        "Id": "3",
+        "Type": "action",
+        "Label": "Push notification",
+        "SuccessTransition": "2",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:app/rn:kind_owl/ad:1",
+        "Service": "kind-owl",
+        "ServiceInterface": "evt.notification.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": {
+              "EventName": "custom",
+              "MessageContent": "siren_ctrl command",
+              "SiteId": ""
+            },
+            "ValueType": "object"
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": false,
+          "VariableName": "",
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "notification_action",
+          "x": 108,
+          "y": 383
+        },
+        "TypeAlias": "Notification"
+      }
+    ],
+    "Settings": null,
+    "IsDisabled": false,
+    "IsDefault": false,
+    "ParallelExecution": "parallel"
+  }

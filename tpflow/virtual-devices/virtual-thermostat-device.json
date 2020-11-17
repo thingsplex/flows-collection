@@ -1,0 +1,504 @@
+{
+    "Id": "DbshKYf9whsPuYO",
+    "ClassId": "21wkqNEywm7WIf1",
+    "Author": "",
+    "Version": 0,
+    "CreatedAt": "2020-08-28T11:05:11.709778521+02:00",
+    "UpdatedAt": "2020-09-01T18:25:06.622795483+02:00",
+    "Name": "Virtual thermostat",
+    "Group": "virtual-device",
+    "Description": "Virtual thermostat template",
+    "Nodes": [
+      {
+        "Id": "1",
+        "Type": "trigger",
+        "Label": "Setpoint",
+        "SuccessTransition": "11",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:thermostat/ad:DbshKYf9whsPuYO_0",
+        "Service": "thermostat",
+        "ServiceInterface": "cmd.setpoint.set",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": ""
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_setpoints": [
+              "heat",
+              "cool",
+              "auto"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 75,
+          "y": 236
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "2",
+        "Type": "trigger",
+        "Label": "Set mode",
+        "SuccessTransition": "8",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:thermostat/ad:DbshKYf9whsPuYO_0",
+        "Service": "thermostat",
+        "ServiceInterface": "cmd.mode.set",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": ""
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_modes": [
+              "off",
+              "heat",
+              "cool"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 526,
+          "y": 240
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "3",
+        "Type": "trigger",
+        "Label": "Get setpoint",
+        "SuccessTransition": "12",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:thermostat/ad:DbshKYf9whsPuYO_0",
+        "Service": "thermostat",
+        "ServiceInterface": "cmd.setpoint.get_report",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": ""
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_setpoints": [
+              "heat",
+              "cool",
+              "auto"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 294,
+          "y": 247
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "4",
+        "Type": "trigger",
+        "Label": "Get mode",
+        "SuccessTransition": "6",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:thermostat/ad:DbshKYf9whsPuYO_0",
+        "Service": "thermostat",
+        "ServiceInterface": "cmd.mode.get_report",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": ""
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_modes": [
+              "off",
+              "heat",
+              "cool"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 781,
+          "y": 239
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "5",
+        "Type": "action",
+        "Label": "Send setpoint",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:thermostat/ad:DbshKYf9whsPuYO_0",
+        "Service": "thermostat",
+        "ServiceInterface": "evt.setpoint.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": {
+              "temp": "21.5",
+              "type": "heat",
+              "unit": "C"
+            },
+            "ValueType": "str_map"
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": true,
+          "VariableName": "setpoint_response2",
+          "VariableType": "str_map",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_setpoints": [
+              "heat",
+              "cool",
+              "auto",
+              "off"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 143,
+          "y": 1040
+        },
+        "TypeAlias": "Action"
+      },
+      {
+        "Id": "6",
+        "Type": "action",
+        "Label": "Send mode",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:thermostat/ad:DbshKYf9whsPuYO_0",
+        "Service": "thermostat",
+        "ServiceInterface": "evt.mode.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": "heat",
+            "ValueType": "string"
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": true,
+          "VariableName": "mode",
+          "VariableType": "string",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 714,
+          "y": 898
+        },
+        "TypeAlias": "Action"
+      },
+      {
+        "Id": "8",
+        "Type": "set_variable",
+        "Label": "save mode",
+        "SuccessTransition": "6",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "DefaultValue": {
+            "Value": 0,
+            "ValueType": ""
+          },
+          "Name": "mode",
+          "UpdateGlobal": false,
+          "UpdateInputMsg": false
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 550,
+          "y": 572
+        },
+        "TypeAlias": "Set variable"
+      },
+      {
+        "Id": "9",
+        "Type": "trigger",
+        "Label": "Get temperature",
+        "SuccessTransition": "10",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:sensor_temp/ad:DbshKYf9whsPuYO_0",
+        "Service": "sensor_temp",
+        "ServiceInterface": "cmd.sensor.get_report",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": ""
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_units": [
+              "C"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 1036,
+          "y": 237
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "10",
+        "Type": "action",
+        "Label": "Report temperature",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:sensor_temp/ad:DbshKYf9whsPuYO_0",
+        "Service": "sensor_temp",
+        "ServiceInterface": "evt.sensor.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": 22.5,
+            "ValueType": "float"
+          },
+          "Props": {
+            "unit": "C"
+          },
+          "RegisterAsVirtualService": true,
+          "VariableName": "",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 1050,
+          "y": 685
+        },
+        "TypeAlias": "Action"
+      },
+      {
+        "Id": "11",
+        "Type": "transform",
+        "Label": "Extract setpoint",
+        "SuccessTransition": "12",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": "",
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "IsTargetVariableInMemory": true,
+          "LVariableName": "",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "",
+          "TargetVariableType": "",
+          "Template": "",
+          "TransformType": "jpath",
+          "ValueMapping": [],
+          "XPathMapping": [
+            {
+              "IsTargetVariableGlobal": false,
+              "Path": "$val.temp",
+              "TargetVariableName": "setpoint_float",
+              "TargetVariableType": "float",
+              "UpdateInputVariable": false
+            }
+          ]
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 59,
+          "y": 534
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "12",
+        "Type": "transform",
+        "Label": "",
+        "SuccessTransition": "5",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": "",
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "LVariableName": "",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "setpoint_response2",
+          "TargetVariableType": "str_map",
+          "Template": " {\n    \"temp\": \"{{variable \"setpoint_float\" false}}\",\n    \"type\": \"heat\",\n    \"unit\": \"C\"\n  }",
+          "TransformType": "template",
+          "ValueMapping": [],
+          "XPathMapping": []
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 143,
+          "y": 786
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "13",
+        "Type": "trigger",
+        "Label": "Get meter report",
+        "SuccessTransition": "14",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:meter_elec/ad:DbshKYf9whsPuYO_0",
+        "Service": "meter_elec",
+        "ServiceInterface": "cmd.meter.get_report",
+        "Config": {
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": "",
+            "ValueType": "bool"
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_units": [
+              "W",
+              "kWh"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 1338,
+          "y": 236
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "14",
+        "Type": "action",
+        "Label": "Report meter power ",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:meter_elec/ad:DbshKYf9whsPuYO_0",
+        "Service": "meter_elec",
+        "ServiceInterface": "evt.meter.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": 100,
+            "ValueType": "float"
+          },
+          "IsVariableGlobal": false,
+          "Props": {
+            "unit": "W"
+          },
+          "RegisterAsVirtualService": true,
+          "ResponseToTopic": "",
+          "VariableName": "",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 1325,
+          "y": 679
+        },
+        "TypeAlias": "Action"
+      },
+      {
+        "Id": "15",
+        "Type": "time_trigger",
+        "Label": "Generate report every hour",
+        "SuccessTransition": "14",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "DefaultMsg": {
+            "Value": "",
+            "ValueType": ""
+          },
+          "Expressions": [
+            {
+              "Comments": "",
+              "Expression": "@every 1h",
+              "Name": ""
+            }
+          ],
+          "GenerateAstroTimeEvents": false,
+          "Latitude": 0,
+          "Longitude": 0,
+          "SunriseTimeOffset": 0,
+          "SunsetTimeOffset": 0
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 1636,
+          "y": 221
+        },
+        "TypeAlias": "Time trigger"
+      }
+    ],
+    "Settings": null,
+    "IsDisabled": true,
+    "IsDefault": false,
+    "ParallelExecution": "parallel"
+  }

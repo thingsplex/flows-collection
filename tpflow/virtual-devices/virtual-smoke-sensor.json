@@ -1,0 +1,174 @@
+{
+    "Id": "YAhu2NrypReB3Mx",
+    "ClassId": "UYuNi7dK3qZuIWT",
+    "Author": "",
+    "Version": 0,
+    "CreatedAt": "2019-11-06T19:04:31.842337503+01:00",
+    "UpdatedAt": "2019-11-06T19:04:42.069756748+01:00",
+    "Name": "Virtual smoke sensor",
+    "Group": "virtual-device",
+    "Description": "",
+    "Nodes": [
+      {
+        "Id": "1",
+        "Type": "trigger",
+        "Label": "Trigger fire",
+        "SuccessTransition": "3",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_bin_switch/ad:YAhu2NrypReB3Mx",
+        "Service": "out_bin_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": false,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": "bool"
+          },
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": null
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 70,
+          "y": 170
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "2",
+        "Type": "action",
+        "Label": "Send fire report",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:alarm_fire/ad:YAhu2NrypReB3Mx_0",
+        "Service": "alarm_fire",
+        "ServiceInterface": "evt.alarm.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": "",
+            "ValueType": ""
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": true,
+          "VariableName": "",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "sup_events": [
+              "smoke",
+              "smoke_test"
+            ]
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 44,
+          "y": 807
+        },
+        "TypeAlias": "Action"
+      },
+      {
+        "Id": "3",
+        "Type": "transform",
+        "Label": "Map event",
+        "SuccessTransition": "4",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "LVariableName": "",
+          "Operation": "add",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "event",
+          "TargetVariableType": "string",
+          "Template": "",
+          "TransformType": "map",
+          "ValueMapping": [
+            {
+              "LValue": {
+                "Value": true,
+                "ValueType": "bool"
+              },
+              "RValue": {
+                "Value": "activ",
+                "ValueType": "string"
+              }
+            },
+            {
+              "LValue": {
+                "Value": false,
+                "ValueType": "bool"
+              },
+              "RValue": {
+                "Value": "deactiv",
+                "ValueType": "string"
+              }
+            }
+          ],
+          "XPathMapping": []
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 73,
+          "y": 388
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "4",
+        "Type": "transform",
+        "Label": "Create report",
+        "SuccessTransition": "2",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "LVariableName": "",
+          "Operation": "add",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "",
+          "TargetVariableType": "",
+          "Template": "{\n    \"event\": \"smoke\",\n    \"status\": \"{{variable \"event\" false}}\"\n}",
+          "TransformType": "template",
+          "ValueMapping": [],
+          "XPathMapping": []
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 79,
+          "y": 598
+        },
+        "TypeAlias": "Transform"
+      }
+    ],
+    "Settings": null,
+    "IsDisabled": false,
+    "IsDefault": false,
+    "ParallelExecution": "parallel"
+  }
