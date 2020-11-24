@@ -693,7 +693,7 @@
         "SuccessTransition": "27",
         "TimeoutTransition": "",
         "ErrorTransition": "",
-        "Address": "pt:j1/mt:cmd/rt:dev/rn:sonos/ad:1/sv:media_player/ad:347E5C3E9B2601400",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:sonos/ad:1/sv:media_player/ad:put_your_sonos_device_address_here",
         "Service": "media_player",
         "ServiceInterface": "cmd.audioclip.play",
         "Config": {
