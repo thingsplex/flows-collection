@@ -1,0 +1,183 @@
+{
+    "Id": "PAfX59pkwv2nsDx",
+    "ClassId": "PAfX59pkwv2nsDx",
+    "Author": "",
+    "Version": 0,
+    "CreatedAt": "2020-11-24T22:41:27.443338+01:00",
+    "UpdatedAt": "2020-11-24T23:09:57.540016+01:00",
+    "Name": "Flow controls flow",
+    "Group": "demo",
+    "Description": "One flow starts and stops another flow",
+    "Nodes": [
+      {
+        "Id": "1",
+        "Type": "trigger",
+        "Label": "Flow controller",
+        "SuccessTransition": "3",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_bin_switch/ad:PAfX59pkwv2nsDx_0",
+        "Service": "out_bin_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "ConnectorID": "",
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "PropFilterName": "",
+          "PropFilterValue": "",
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": "bool"
+          },
+          "ValueJPath": "",
+          "ValueJPathResultType": "",
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": null
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 295,
+          "y": 175
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "2",
+        "Type": "transform",
+        "Label": "Create request",
+        "SuccessTransition": "4",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": "",
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "LVariableName": "",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "request",
+          "TargetVariableType": "str_map",
+          "Template": " {\n    \"op\": \"{{ variable \"action\" false }}\",\n    \"id\": \"{{ setting \"flow_id\" }}\"\n  }",
+          "TransformType": "template",
+          "ValueMapping": [],
+          "XPathMapping": []
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 287,
+          "y": 582
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "3",
+        "Type": "transform",
+        "Label": "Map action",
+        "SuccessTransition": "2",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": "",
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "LVariableName": "",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "action",
+          "TargetVariableType": "string",
+          "Template": "",
+          "TransformType": "map",
+          "ValueMapping": [
+            {
+              "LValue": {
+                "Value": true,
+                "ValueType": "bool"
+              },
+              "RValue": {
+                "Value": "start",
+                "ValueType": "string"
+              }
+            },
+            {
+              "LValue": {
+                "Value": false,
+                "ValueType": "bool"
+              },
+              "RValue": {
+                "Value": "stop",
+                "ValueType": "string"
+              }
+            }
+          ],
+          "XPathMapping": []
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 296,
+          "y": 381
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "4",
+        "Type": "action",
+        "Label": "Send command to tpflow",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:app/rn:tpflow/ad:1",
+        "Service": "tpflow",
+        "ServiceInterface": "cmd.flow.ctrl",
+        "Config": {
+          "DefaultValue": {
+            "Value": "",
+            "ValueType": ""
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": false,
+          "ResponseToTopic": "pt:j1/mt:rsp/rt:app/rn:tplex-ui/ad:1",
+          "VariableName": "request",
+          "VariableType": "str_map",
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 280,
+          "y": 813
+        },
+        "TypeAlias": "Action"
+      }
+    ],
+    "Settings": {
+      "flow_id": {
+        "Value": "21wkqNEywm7WIf1",
+        "ValueType": "string",
+        "Key": "flow_id",
+        "Description": "Id of the flow that will be controlled"
+      }
+    },
+    "IsDisabled": false,
+    "IsDefault": false,
+    "ParallelExecution": "parallel"
+  }
