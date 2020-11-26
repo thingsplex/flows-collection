@@ -1,0 +1,301 @@
+{
+    "Id": "NFlvprBHY6BCmY7",
+    "ClassId": "NFlvprBHY6BCmY7",
+    "Author": "",
+    "Version": 0,
+    "CreatedAt": "2020-11-26T21:53:06.894883+01:00",
+    "UpdatedAt": "2020-11-26T22:12:08.930747+01:00",
+    "Name": "BooleanLogic",
+    "Group": "demo",
+    "Description": "",
+    "Nodes": [
+      {
+        "Id": "1",
+        "Type": "trigger",
+        "Label": "Relay 1",
+        "SuccessTransition": "4",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_bin_switch/ad:NFlvprBHY6BCmY7_1",
+        "Service": "out_bin_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "ConnectorID": "",
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "PropFilterName": "",
+          "PropFilterValue": "",
+          "RegisterAsVirtualService": false,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": "bool"
+          },
+          "ValueJPath": "",
+          "ValueJPathResultType": "",
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": null
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 293,
+          "y": 183
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "2",
+        "Type": "trigger",
+        "Label": "Relay 2",
+        "SuccessTransition": "5",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_bin_switch/ad:NFlvprBHY6BCmY7_2",
+        "Service": "out_bin_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": false,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": "",
+            "ValueType": "bool"
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 558,
+          "y": 183
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "3",
+        "Type": "trigger",
+        "Label": "Relay 3",
+        "SuccessTransition": "6",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_bin_switch/ad:NFlvprBHY6BCmY7_3",
+        "Service": "out_bin_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": false,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": "",
+            "ValueType": "bool"
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 885,
+          "y": 183
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "4",
+        "Type": "set_variable",
+        "Label": "Save relay state",
+        "SuccessTransition": "7",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "DefaultValue": {
+            "Value": 0,
+            "ValueType": ""
+          },
+          "Name": "relay_state_1",
+          "UpdateGlobal": false,
+          "UpdateInputMsg": false
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 281,
+          "y": 421
+        },
+        "TypeAlias": "Set variable"
+      },
+      {
+        "Id": "5",
+        "Type": "set_variable",
+        "Label": "relay_state_2",
+        "SuccessTransition": "7",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "DefaultValue": {
+            "Value": 0,
+            "ValueType": ""
+          },
+          "Name": "relay_state_2",
+          "UpdateGlobal": false,
+          "UpdateInputMsg": false
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 563,
+          "y": 420
+        },
+        "TypeAlias": "Set variable"
+      },
+      {
+        "Id": "6",
+        "Type": "set_variable",
+        "Label": "relay_state_3",
+        "SuccessTransition": "7",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "DefaultValue": {
+            "Value": 0,
+            "ValueType": ""
+          },
+          "Name": "relay_state_3",
+          "UpdateGlobal": false,
+          "UpdateInputMsg": false
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 852,
+          "y": 422
+        },
+        "TypeAlias": "Set variable"
+      },
+      {
+        "Id": "7",
+        "Type": "if",
+        "Label": "Turn On device If any of relays is On ",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": [
+            {
+              "BooleanOperator": "or",
+              "LeftVariableIsGlobal": false,
+              "LeftVariableName": "relay_state_1",
+              "Operand": "eq",
+              "RightVariable": {
+                "Value": true,
+                "ValueType": "bool"
+              }
+            },
+            {
+              "BooleanOperator": "or",
+              "LeftVariableIsGlobal": false,
+              "LeftVariableName": "relay_state_2",
+              "Operand": "eq",
+              "RightVariable": {
+                "Value": true,
+                "ValueType": "bool"
+              }
+            },
+            {
+              "BooleanOperator": "",
+              "LeftVariableIsGlobal": false,
+              "LeftVariableName": "relay_state_3",
+              "Operand": "eq",
+              "RightVariable": {
+                "Value": true,
+                "ValueType": "bool"
+              }
+            }
+          ],
+          "FalseTransition": "9",
+          "TrueTransition": "8"
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 536,
+          "y": 696
+        },
+        "TypeAlias": "If condition"
+      },
+      {
+        "Id": "8",
+        "Type": "action",
+        "Label": "Turn On device",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:conbee/ad:1/sv:out_lvl_switch/ad:l5_0",
+        "Service": "out_lvl_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "DefaultValue": {
+            "Value": true,
+            "ValueType": "bool"
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": false,
+          "ResponseToTopic": "",
+          "VariableName": "",
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 404,
+          "y": 962
+        },
+        "TypeAlias": "Action"
+      },
+      {
+        "Id": "9",
+        "Type": "action",
+        "Label": "Turn Off device",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:conbee/ad:1/sv:out_lvl_switch/ad:l5_0",
+        "Service": "out_lvl_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "DefaultValue": {
+            "Value": false,
+            "ValueType": "bool"
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": false,
+          "ResponseToTopic": "",
+          "VariableName": "",
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 673,
+          "y": 968
+        },
+        "TypeAlias": "Action"
+      }
+    ],
+    "Settings": null,
+    "IsDisabled": false,
+    "IsDefault": false,
+    "ParallelExecution": "parallel"
+  }
