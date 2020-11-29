@@ -1,0 +1,522 @@
+{
+    "Id": "zcPkemLaH9BAy2p",
+    "ClassId": "pvNmsGmp9xxkZlB",
+    "Author": "",
+    "Version": 0,
+    "CreatedAt": "2019-11-25T17:34:26.833213607+01:00",
+    "UpdatedAt": "2020-11-29T17:15:45.82128919+01:00",
+    "Name": "twinkly",
+    "Group": "experiment",
+    "Description": "",
+    "Nodes": [
+      {
+        "Id": "1",
+        "Type": "trigger",
+        "Label": "no label",
+        "SuccessTransition": "2",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_bin_switch/a twinklyd:zcPkemLaH9BAy2p_0",
+        "Service": "out_bin_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "InputVariableType": "",
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": false,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": null,
+            "ValueType": "bool"
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": null
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 104,
+          "y": 235
+        },
+        "TypeAlias": "Trigger"
+      },
+      {
+        "Id": "2",
+        "Type": "rest_action",
+        "Label": "Login",
+        "SuccessTransition": "6",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Auth": {
+            "ClientID": "",
+            "ClientSecret": "",
+            "Enabled": false,
+            "GrantType": "password",
+            "Password": "",
+            "Scope": "",
+            "Url": "http://",
+            "Username": ""
+          },
+          "Headers": [
+            {
+              "Name": "Content-type",
+              "Value": "application/json"
+            }
+          ],
+          "LogResponse": true,
+          "Method": "POST",
+          "RequestPayloadType": "json",
+          "RequestTemplate": "{\"challenge\": \"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\"}",
+          "ResponseMapping": [
+            {
+              "IsVariableGlobal": false,
+              "Name": "",
+              "Path": "$.authentication_token",
+              "PathType": "json",
+              "TargetVariableName": "auth_token",
+              "TargetVariableType": "string"
+            }
+          ],
+          "Url": "http://{{setting \"device_ip\" }}/xled/v1/login"
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 78,
+          "y": 442
+        },
+        "TypeAlias": "HTTP msg"
+      },
+      {
+        "Id": "3",
+        "Type": "trigger",
+        "Label": "turn on and off ",
+        "SuccessTransition": "4",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_lvl_switch/ad:zcPkemLaH9BAy2p_0",
+        "Service": "out_lvl_switch",
+        "ServiceInterface": "cmd.binary.set",
+        "Config": {
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": "",
+            "ValueType": "bool"
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 791,
+          "y": 153
+        },
+        "TypeAlias": "Trigger",
+        "LastValue": true
+      },
+      {
+        "Id": "4",
+        "Type": "transform",
+        "Label": "map mode",
+        "SuccessTransition": "5",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": "",
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "LVariableName": "",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "mode",
+          "TargetVariableType": "string",
+          "Template": "",
+          "TransformType": "map",
+          "ValueMapping": [
+            {
+              "LValue": {
+                "Value": true,
+                "ValueType": "bool"
+              },
+              "RValue": {
+                "Value": "movie",
+                "ValueType": "string"
+              }
+            },
+            {
+              "LValue": {
+                "Value": false,
+                "ValueType": "bool"
+              },
+              "RValue": {
+                "Value": "off",
+                "ValueType": "string"
+              }
+            }
+          ],
+          "XPathMapping": []
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 782,
+          "y": 411
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "5",
+        "Type": "rest_action",
+        "Label": "Set mode",
+        "SuccessTransition": "13",
+        "TimeoutTransition": "",
+        "ErrorTransition": "2",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Auth": {
+            "ClientID": "",
+            "ClientSecret": "",
+            "Enabled": false,
+            "GrantType": "password",
+            "Password": "",
+            "Scope": "",
+            "Url": "http://",
+            "Username": ""
+          },
+          "Headers": [],
+          "HeadersVariableName": "headers",
+          "LogResponse": true,
+          "Method": "POST",
+          "RequestPayloadType": "json",
+          "RequestTemplate": "{\"mode\":\"{{variable \"mode\" false}}\"}",
+          "ResponseMapping": [
+            {
+              "IsVariableGlobal": false,
+              "Name": "",
+              "Path": "$.authentication_token",
+              "PathType": "json",
+              "TargetVariableName": "auth_token",
+              "TargetVariableType": "string"
+            }
+          ],
+          "Url": "http://{{setting \"device_ip\" }}/xled/v1/led/mode"
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 756,
+          "y": 624
+        },
+        "TypeAlias": "HTTP msg"
+      },
+      {
+        "Id": "6",
+        "Type": "transform",
+        "Label": "Set header",
+        "SuccessTransition": "7",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": "",
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "LVariableName": "",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "headers",
+          "TargetVariableType": "str_map",
+          "Template": "{\"Content-Type\":\"application/json\",\"X-Auth-Token\":\"{{ variable \"auth_token\" false }}\"}",
+          "TransformType": "template",
+          "ValueMapping": [],
+          "XPathMapping": []
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 79,
+          "y": 657
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "7",
+        "Type": "rest_action",
+        "Label": "Verify",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Auth": {
+            "ClientID": "",
+            "ClientSecret": "",
+            "Enabled": false,
+            "GrantType": "password",
+            "Password": "",
+            "Scope": "",
+            "Url": "http://",
+            "Username": ""
+          },
+          "Headers": [],
+          "HeadersVariableName": "headers",
+          "LogResponse": true,
+          "Method": "POST",
+          "RequestPayloadType": "json",
+          "RequestTemplate": "{}",
+          "ResponseMapping": [],
+          "Url": "http://{{setting \"device_ip\" }}/xled/v1/verify"
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 77,
+          "y": 860
+        },
+        "TypeAlias": "HTTP msg"
+      },
+      {
+        "Id": "8",
+        "Type": "trigger",
+        "Label": "control level",
+        "SuccessTransition": "12",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:cmd/rt:dev/rn:flow/ad:1/sv:out_lvl_switch/ad:zcPkemLaH9BAy2p_0",
+        "Service": "out_lvl_switch",
+        "ServiceInterface": "cmd.lvl.set",
+        "Config": {
+          "IsValueFilterEnabled": false,
+          "LookupServiceNameAndLocation": false,
+          "RegisterAsVirtualService": true,
+          "Timeout": 0,
+          "ValueFilter": {
+            "Value": "",
+            "ValueType": "int"
+          },
+          "VirtualServiceGroup": "ch_0",
+          "VirtualServiceProps": {
+            "max_lvl": 100,
+            "min_lvl": 0
+          }
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 428,
+          "y": 160
+        },
+        "TypeAlias": "Trigger",
+        "LastValue": 4
+      },
+      {
+        "Id": "9",
+        "Type": "exec",
+        "Label": "Send frames",
+        "SuccessTransition": "14",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Command": "",
+          "ExecType": "python",
+          "InputVariableName": "input_var",
+          "IsInputJson": true,
+          "IsInputVariableGlobal": false,
+          "IsOutputJson": false,
+          "IsOutputVariableGlobal": false,
+          "OutputVariableName": "script_out",
+          "ScriptBody": "import socket\nimport base64\nimport time\nimport json\nimport sys\ninMsg=json.loads(sys.argv[1])\n\n\nserverAddressPort   = (inMsg[\"ip\"], 7777)\n\n# Create a UDP socket at client side\nUDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)\n# Send to server using created UDP socket\n\n# UDPClientSocket.sendto(bytesToSend, serverAddressPort)\n\ntoken = inMsg[\"token\"]\n# token_bytes = bytearray(token, 'utf-8')\n\ndef send_packet(token,frame):\n    token_bytes = base64.b64decode(token)\n    #print(len(token_bytes))\n    packet = bytearray()\n    # start bit\n    packet.append(1)\n    for tb in token_bytes:\n        packet.append(tb)\n    # frame size  \n    packet.append(105)\n    packet.extend(frame)\n    #print(len(packet))\n    UDPClientSocket.sendto(packet, serverAddressPort)\n\ndef run_scene(token):    \n    frame = bytearray()\n\n    for i in range(100):\n        frame = bytearray()\n        for i2 in range(105):\n            if i == i2 :\n                frame.append(100)\n                frame.append(100)\n                frame.append(100)\n            else :\n                frame.append(0)\n                frame.append(0)\n                frame.append(0)\n\n        send_packet(token,frame)\n        time.sleep(0.03)\n        \ndef set_level_scene(level,r,g,b,token):\n    frame = bytearray()\n    for i2 in range(105):\n        if i2 < level :\n             frame.append(r)\n             frame.append(g)\n             frame.append(b)\n        else :\n             frame.append(0)\n             frame.append(0)\n             frame.append(0)\n    send_packet(token,frame)            \n\nset_level_scene(inMsg[\"input\"],255,255,255,token)\n"
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 377,
+          "y": 829
+        },
+        "TypeAlias": "Run script"
+      },
+      {
+        "Id": "10",
+        "Type": "rest_action",
+        "Label": "Set mode",
+        "SuccessTransition": "9",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Auth": {
+            "ClientID": "",
+            "ClientSecret": "",
+            "Enabled": false,
+            "GrantType": "password",
+            "Password": "",
+            "Scope": "",
+            "Url": "http://",
+            "Username": ""
+          },
+          "Headers": [],
+          "HeadersVariableName": "headers",
+          "LogResponse": true,
+          "Method": "POST",
+          "RequestPayloadType": "json",
+          "RequestTemplate": "{\"mode\":\"rt\"}",
+          "ResponseMapping": [
+            {
+              "IsVariableGlobal": false,
+              "Name": "",
+              "Path": "$.authentication_token",
+              "PathType": "json",
+              "TargetVariableName": "auth_token",
+              "TargetVariableType": "string"
+            }
+          ],
+          "Url": "http://{{setting \"device_ip\" }}/xled/v1/led/mode"
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 400,
+          "y": 603
+        },
+        "TypeAlias": "HTTP msg"
+      },
+      {
+        "Id": "12",
+        "Type": "transform",
+        "Label": "map input",
+        "SuccessTransition": "10",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "",
+        "Service": "",
+        "ServiceInterface": "",
+        "Config": {
+          "Expression": "",
+          "IsLVariableGlobal": false,
+          "IsRVariableGlobal": false,
+          "IsTargetVariableGlobal": false,
+          "IsTargetVariableInMemory": true,
+          "LVariableName": "",
+          "RValue": {
+            "Value": 0,
+            "ValueType": "int"
+          },
+          "RVariableName": "",
+          "Rtype": "var",
+          "TargetVariableName": "input_var",
+          "TargetVariableType": "object",
+          "Template": "{\"input\":{{.Variable}},\"token\": \"{{ variable \"auth_token\" false }}\",\"ip\":\"{{setting \"device_ip\" }}\" }",
+          "TransformType": "template",
+          "ValueMapping": [],
+          "XPathMapping": [
+            {
+              "IsTargetVariableGlobal": false,
+              "Path": "$",
+              "TargetVariableName": "input_var",
+              "TargetVariableType": "object",
+              "UpdateInputVariable": false
+            }
+          ]
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 403,
+          "y": 374
+        },
+        "TypeAlias": "Transform"
+      },
+      {
+        "Id": "13",
+        "Type": "action",
+        "Label": "Send response",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:out_lvl_switch/ad:zcPkemLaH9BAy2p_0",
+        "Service": "out_lvl_switch",
+        "ServiceInterface": "evt.binary.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": "",
+            "ValueType": ""
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": false,
+          "VariableName": "",
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 733,
+          "y": 863
+        },
+        "TypeAlias": "Action",
+        "LastValue": true
+      },
+      {
+        "Id": "14",
+        "Type": "action",
+        "Label": "Send response",
+        "SuccessTransition": "",
+        "TimeoutTransition": "",
+        "ErrorTransition": "",
+        "Address": "pt:j1/mt:evt/rt:dev/rn:flow/ad:1/sv:out_lvl_switch/ad:zcPkemLaH9BAy2p_0",
+        "Service": "out_lvl_switch",
+        "ServiceInterface": "evt.lvl.report",
+        "Config": {
+          "DefaultValue": {
+            "Value": "",
+            "ValueType": ""
+          },
+          "IsVariableGlobal": false,
+          "Props": {},
+          "RegisterAsVirtualService": false,
+          "VariableName": "",
+          "VirtualServiceGroup": "",
+          "VirtualServiceProps": {}
+        },
+        "Ui": {
+          "nodeType": "",
+          "x": 381,
+          "y": 1009
+        },
+        "TypeAlias": "Action",
+        "LastValue": 4
+      }
+    ],
+    "Settings": {
+      "device_ip": {
+        "Value": "192.168.86.38",
+        "ValueType": "string",
+        "Key": "device_ip",
+        "Description": "Twinkly IP address"
+      }
+    },
+    "IsDisabled": false,
+    "IsDefault": false,
+    "ParallelExecution": "parallel"
+  }
