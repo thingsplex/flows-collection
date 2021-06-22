@@ -1,749 +1,708 @@
 {
-    "Id": "GjKWMiNsNoVb08Q",
-    "ClassId": "5akMf0ZOkJ",
-    "Author": "",
-    "Version": 0,
-    "CreatedAt": "2019-07-26T09:59:36.756098691+02:00",
-    "UpdatedAt": "2020-10-12T17:19:07.624960608+02:00",
-    "Name": "Alarm system",
-    "Group": "security",
-    "Description": "Simple alarm system which registers motion and reports over Pushover ",
-    "Nodes": [
-      {
-        "Id": "1",
-        "Type": "trigger",
-        "Label": "Any motion",
-        "SuccessTransition": "2",
-        "TimeoutTransition": "4",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:evt/rt:dev/+/+/sv:sensor_presence/+",
-        "Service": "sensor_presence",
-        "ServiceInterface": "evt.presence.report",
-        "Config": {
-          "IsValueFilterEnabled": true,
-          "LookupServiceNameAndLocation": true,
-          "Timeout": 300,
-          "ValueFilter": {
-            "Value": true,
-            "ValueType": "bool"
+  "Id": "GjKWMiNsNoVb08Q",
+  "ClassId": "5akMf0ZOkJ",
+  "Author": "",
+  "Version": 0,
+  "CreatedAt": "2019-07-26T09:59:36.756098691+02:00",
+  "UpdatedAt": "2021-06-22T18:05:22.017843274+02:00",
+  "Name": "Alarm system",
+  "Group": "security",
+  "Description": "Simple alarm system which registers motion and reports over Pushover ",
+  "Nodes": [
+    {
+      "Id": "1",
+      "Type": "trigger",
+      "Label": "Any motion",
+      "SuccessTransition": "2",
+      "TimeoutTransition": "4",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:evt/rt:dev/+/+/sv:sensor_presence/+",
+      "Service": "sensor_presence",
+      "ServiceInterface": "evt.presence.report",
+      "Config": {
+        "IsValueFilterEnabled": true,
+        "LookupServiceNameAndLocation": true,
+        "Timeout": 300,
+        "ValueFilter": {
+          "Value": true,
+          "ValueType": "bool"
+        }
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 263,
+        "y": 151
+      },
+      "TypeAlias": "Trigger"
+    },
+    {
+      "Id": "2",
+      "Type": "set_variable",
+      "Label": "Set variable",
+      "SuccessTransition": "5",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "DefaultValue": {
+          "Value": true,
+          "ValueType": "bool"
+        },
+        "Name": "presence_at_home",
+        "UpdateGlobal": true,
+        "UpdateInputMsg": false,
+        "Value": true
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 138,
+        "y": 435
+      },
+      "TypeAlias": "Set variable"
+    },
+    {
+      "Id": "4",
+      "Type": "set_variable",
+      "Label": "Clear presence",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "DefaultValue": {
+          "Value": false,
+          "ValueType": "bool"
+        },
+        "Name": "presence_at_home",
+        "UpdateGlobal": true,
+        "UpdateInputMsg": false,
+        "Value": false
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 344,
+        "y": 433
+      },
+      "TypeAlias": "Set variable"
+    },
+    {
+      "Id": "5",
+      "Type": "if",
+      "Label": "Check if ARMED ",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "Expression": [
+          {
+            "BooleanOperator": "",
+            "LeftVariableIsGlobal": true,
+            "LeftVariableName": "home.security.mode",
+            "Operand": "eq",
+            "RightVariable": {
+              "Value": "armed",
+              "ValueType": "string"
+            }
           }
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 263,
-          "y": 151
-        },
-        "TypeAlias": "Trigger"
+        ],
+        "FalseTransition": "",
+        "TrueTransition": "27"
       },
-      {
-        "Id": "2",
-        "Type": "set_variable",
-        "Label": "Set variable",
-        "SuccessTransition": "5",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "DefaultValue": {
-            "Value": true,
-            "ValueType": "bool"
+      "Ui": {
+        "nodeType": "",
+        "x": 247,
+        "y": 703
+      },
+      "TypeAlias": "If condition"
+    },
+    {
+      "Id": "7",
+      "Type": "trigger",
+      "Label": "Any door opened",
+      "SuccessTransition": "23",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:evt/rt:dev/+/ad:1/sv:sensor_contact/+",
+      "Service": "sensor_contact",
+      "ServiceInterface": "evt.open.report",
+      "Config": {
+        "IsValueFilterEnabled": true,
+        "LookupServiceNameAndLocation": true,
+        "Timeout": 0,
+        "ValueFilter": {
+          "Value": true,
+          "ValueType": "bool"
+        }
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 548,
+        "y": 153
+      },
+      "TypeAlias": "Trigger"
+    },
+    {
+      "Id": "8",
+      "Type": "action",
+      "Label": "Push notification",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:evt/rt:app/rn:kind_owl/ad:1",
+      "Service": "kind-owl",
+      "ServiceInterface": "evt.notification.report",
+      "Config": {
+        "DefaultValue": {
+          "Value": {
+            "EventName": "custom",
+            "MessageContent": "Motion detected at Home",
+            "SiteId": "FE10E49D-B9A3-4859-80CC-C8529825D92B"
           },
-          "Name": "presence_at_home",
-          "UpdateGlobal": true,
-          "UpdateInputMsg": false,
-          "Value": true
+          "ValueType": "object"
         },
-        "Ui": {
-          "nodeType": "",
-          "x": 138,
-          "y": 435
-        },
-        "TypeAlias": "Set variable"
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
       },
-      {
-        "Id": "4",
-        "Type": "set_variable",
-        "Label": "Clear presence",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "DefaultValue": {
-            "Value": false,
-            "ValueType": "bool"
+      "Ui": {
+        "nodeType": "notification_action",
+        "x": 261,
+        "y": 1780
+      },
+      "TypeAlias": "Notification"
+    },
+    {
+      "Id": "9",
+      "Type": "action",
+      "Label": "Visual alarm - set red lamp",
+      "SuccessTransition": "10",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:cmd/rt:dev/rn:hue/ad:1/sv:color_ctrl/ad:l4_0",
+      "Service": "color_ctrl",
+      "ServiceInterface": "cmd.color.set",
+      "Config": {
+        "DefaultValue": {
+          "Value": {
+            "blue": 0,
+            "green": 0,
+            "red": 255
           },
-          "Name": "presence_at_home",
-          "UpdateGlobal": true,
-          "UpdateInputMsg": false,
-          "Value": false
+          "ValueType": "int_map"
         },
-        "Ui": {
-          "nodeType": "",
-          "x": 344,
-          "y": 433
-        },
-        "TypeAlias": "Set variable"
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "ResponseToTopic": "",
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
       },
-      {
-        "Id": "5",
-        "Type": "if",
-        "Label": "Check if ARMED ",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "Expression": [
-            {
-              "BooleanOperator": "",
-              "LeftVariableIsGlobal": true,
-              "LeftVariableName": "home.security.mode",
-              "Operand": "eq",
-              "RightVariable": {
-                "Value": "armed",
-                "ValueType": "string"
-              }
+      "Ui": {
+        "nodeType": "",
+        "x": 294,
+        "y": 1331
+      },
+      "TypeAlias": "Action"
+    },
+    {
+      "Id": "10",
+      "Type": "action",
+      "Label": "Visual alarm - set alarm",
+      "SuccessTransition": "8",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:cmd/rt:dev/rn:hue/ad:1/sv:scene_ctrl/ad:l4_0",
+      "Service": "scene_ctrl",
+      "ServiceInterface": "cmd.scene.set",
+      "Config": {
+        "DefaultValue": {
+          "Value": "lselect",
+          "ValueType": "string"
+        },
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "ResponseToTopic": "",
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 288,
+        "y": 1539
+      },
+      "TypeAlias": "Action"
+    },
+    {
+      "Id": "12",
+      "Type": "vinc_trigger",
+      "Label": "Home mode trigger",
+      "SuccessTransition": "14",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "EventType": "mode",
+        "IsValueFilterEnabled": false,
+        "Timeout": 0,
+        "ValueFilter": ""
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 863,
+        "y": 153
+      },
+      "TypeAlias": "Home event"
+    },
+    {
+      "Id": "13",
+      "Type": "wait",
+      "Label": "Arm delay",
+      "SuccessTransition": "15",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": 15000,
+      "Ui": {
+        "nodeType": "",
+        "x": 713,
+        "y": 1047
+      },
+      "TypeAlias": "Delay"
+    },
+    {
+      "Id": "14",
+      "Type": "if",
+      "Label": "AWAY mode",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "Expression": [
+          {
+            "BooleanOperator": "or",
+            "LeftVariableIsGlobal": false,
+            "LeftVariableName": "",
+            "Operand": "eq",
+            "RightVariable": {
+              "Value": "away",
+              "ValueType": "string"
             }
-          ],
-          "FalseTransition": "",
-          "TrueTransition": "27"
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 247,
-          "y": 703
-        },
-        "TypeAlias": "If condition"
-      },
-      {
-        "Id": "7",
-        "Type": "trigger",
-        "Label": "Any door opened",
-        "SuccessTransition": "23",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:evt/rt:dev/+/ad:1/sv:sensor_contact/+",
-        "Service": "sensor_contact",
-        "ServiceInterface": "evt.open.report",
-        "Config": {
-          "IsValueFilterEnabled": true,
-          "LookupServiceNameAndLocation": true,
-          "Timeout": 0,
-          "ValueFilter": {
-            "Value": true,
-            "ValueType": "bool"
+          },
+          {
+            "BooleanOperator": "",
+            "LeftVariableIsGlobal": false,
+            "LeftVariableName": "",
+            "Operand": "eq",
+            "RightVariable": {
+              "Value": "vacation",
+              "ValueType": "string"
+            }
           }
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 548,
-          "y": 153
-        },
-        "TypeAlias": "Trigger"
+        ],
+        "FalseTransition": "16",
+        "TrueTransition": "22"
       },
-      {
-        "Id": "8",
-        "Type": "action",
-        "Label": "Push notification",
-        "SuccessTransition": "11",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:evt/rt:app/rn:kind_owl/ad:1",
-        "Service": "kind-owl",
-        "ServiceInterface": "evt.notification.report",
-        "Config": {
-          "DefaultValue": {
-            "Value": {
-              "EventName": "custom",
-              "MessageContent": "Motion detected at Home",
-              "SiteId": ""
-            },
-            "ValueType": "object"
-          },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
-        },
-        "Ui": {
-          "nodeType": "notification_action",
-          "x": 261,
-          "y": 1780
-        },
-        "TypeAlias": "Notification"
+      "Ui": {
+        "nodeType": "",
+        "x": 843,
+        "y": 446
       },
-      {
-        "Id": "9",
-        "Type": "action",
-        "Label": "Visual alarm - set red lamp",
-        "SuccessTransition": "10",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:cmd/rt:dev/rn:hue/ad:1/sv:color_ctrl/ad:l4_0",
-        "Service": "color_ctrl",
-        "ServiceInterface": "cmd.color.set",
-        "Config": {
-          "DefaultValue": {
-            "Value": {
-              "blue": 0,
-              "green": 0,
-              "red": 255
-            },
-            "ValueType": "int_map"
-          },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "ResponseToTopic": "",
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
+      "TypeAlias": "If condition"
+    },
+    {
+      "Id": "15",
+      "Type": "set_variable",
+      "Label": "Set ARMED",
+      "SuccessTransition": "20",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "DefaultValue": {
+          "Value": "armed",
+          "ValueType": "string"
         },
-        "Ui": {
-          "nodeType": "",
-          "x": 294,
-          "y": 1331
-        },
-        "TypeAlias": "Action"
+        "Name": "home.security.mode",
+        "UpdateGlobal": true,
+        "UpdateInputMsg": false
       },
-      {
-        "Id": "10",
-        "Type": "action",
-        "Label": "Visual alarm - set alarm",
-        "SuccessTransition": "8",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:cmd/rt:dev/rn:hue/ad:1/sv:scene_ctrl/ad:l4_0",
-        "Service": "scene_ctrl",
-        "ServiceInterface": "cmd.scene.set",
-        "Config": {
-          "DefaultValue": {
-            "Value": "lselect",
-            "ValueType": "string"
-          },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "ResponseToTopic": "",
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 288,
-          "y": 1539
-        },
-        "TypeAlias": "Action"
+      "Ui": {
+        "nodeType": "",
+        "x": 736,
+        "y": 1250
       },
-      {
-        "Id": "11",
-        "Type": "rest_action",
-        "Label": "Sending notification using Pushover service",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "Auth": {
-            "ClientID": "",
-            "ClientSecret": "",
-            "Enabled": false,
-            "GrantType": "password",
-            "Password": "",
-            "Scope": "",
-            "Url": "http://",
-            "Username": ""
-          },
-          "Headers": [
-            {
-              "Name": "Content-type",
-              "Value": "application/json"
+      "TypeAlias": "Set variable"
+    },
+    {
+      "Id": "16",
+      "Type": "if",
+      "Label": "SLEEP",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "Expression": [
+          {
+            "BooleanOperator": "",
+            "LeftVariableIsGlobal": false,
+            "LeftVariableName": "",
+            "Operand": "eq",
+            "RightVariable": {
+              "Value": "sleep",
+              "ValueType": "string"
             }
-          ],
-          "LogResponse": false,
-          "Method": "POST",
-          "RequestPayloadType": "json",
-          "RequestTemplate": "{\"token\":\"\",\n\"user\":\"\",\n\"device\":\"FH-FIMP\",\n\"title\":\"Home Alarm system\",\n\"message\":\" Motion detected at Home while it's in Away mode \"}",
-          "ResponseMapping": [],
-          "Url": "https://api.pushover.net/1/messages.json"
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 253,
-          "y": 1984
-        },
-        "TypeAlias": "HTTP msg"
+          }
+        ],
+        "FalseTransition": "18",
+        "TrueTransition": "17"
       },
-      {
-        "Id": "12",
-        "Type": "vinc_trigger",
-        "Label": "Home mode trigger",
-        "SuccessTransition": "14",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "EventType": "mode",
-          "IsValueFilterEnabled": false,
-          "Timeout": 0,
-          "ValueFilter": ""
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 863,
-          "y": 153
-        },
-        "TypeAlias": "Home event"
+      "Ui": {
+        "nodeType": "",
+        "x": 1049,
+        "y": 442
       },
-      {
-        "Id": "13",
-        "Type": "wait",
-        "Label": "Arm delay",
-        "SuccessTransition": "15",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": 15000,
-        "Ui": {
-          "nodeType": "",
-          "x": 713,
-          "y": 1047
+      "TypeAlias": "If condition"
+    },
+    {
+      "Id": "17",
+      "Type": "set_variable",
+      "Label": "Set ARMED PERIMETER",
+      "SuccessTransition": "20",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "DefaultValue": {
+          "Value": "armed_perimeter",
+          "ValueType": "string"
         },
-        "TypeAlias": "Delay"
+        "Name": "home.security.mode",
+        "UpdateGlobal": true,
+        "UpdateInputMsg": false
       },
-      {
-        "Id": "14",
-        "Type": "if",
-        "Label": "AWAY mode",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "Expression": [
-            {
-              "BooleanOperator": "or",
-              "LeftVariableIsGlobal": false,
-              "LeftVariableName": "",
-              "Operand": "eq",
-              "RightVariable": {
-                "Value": "away",
-                "ValueType": "string"
-              }
-            },
-            {
-              "BooleanOperator": "",
-              "LeftVariableIsGlobal": false,
-              "LeftVariableName": "",
-              "Operand": "eq",
-              "RightVariable": {
-                "Value": "vacation",
-                "ValueType": "string"
-              }
+      "Ui": {
+        "nodeType": "",
+        "x": 1004,
+        "y": 902
+      },
+      "TypeAlias": "Set variable"
+    },
+    {
+      "Id": "18",
+      "Type": "if",
+      "Label": "HOME",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "Expression": [
+          {
+            "BooleanOperator": "",
+            "LeftVariableIsGlobal": false,
+            "LeftVariableName": "",
+            "Operand": "eq",
+            "RightVariable": {
+              "Value": "home",
+              "ValueType": "string"
             }
-          ],
-          "FalseTransition": "16",
-          "TrueTransition": "22"
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 843,
-          "y": 446
-        },
-        "TypeAlias": "If condition"
+          }
+        ],
+        "FalseTransition": "",
+        "TrueTransition": "19"
       },
-      {
-        "Id": "15",
-        "Type": "set_variable",
-        "Label": "Set ARMED",
-        "SuccessTransition": "20",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "DefaultValue": {
-            "Value": "armed",
-            "ValueType": "string"
+      "Ui": {
+        "nodeType": "",
+        "x": 1248,
+        "y": 442
+      },
+      "TypeAlias": "If condition"
+    },
+    {
+      "Id": "19",
+      "Type": "set_variable",
+      "Label": "Set DISARMED",
+      "SuccessTransition": "25",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "DefaultValue": {
+          "Value": "disarmed",
+          "ValueType": "string"
+        },
+        "Name": "home.security.mode",
+        "UpdateGlobal": true,
+        "UpdateInputMsg": false
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 1242,
+        "y": 904
+      },
+      "TypeAlias": "Set variable"
+    },
+    {
+      "Id": "20",
+      "Type": "action",
+      "Label": "Push notification",
+      "SuccessTransition": "24",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:evt/rt:app/rn:kind_owl/ad:1",
+      "Service": "kind-owl",
+      "ServiceInterface": "evt.notification.report",
+      "Config": {
+        "DefaultValue": {
+          "Value": {
+            "EventName": "custom",
+            "MessageContent": "The Home is ARMED",
+            "SiteId": ""
           },
-          "Name": "home.security.mode",
-          "UpdateGlobal": true,
-          "UpdateInputMsg": false
+          "ValueType": "object"
         },
-        "Ui": {
-          "nodeType": "",
-          "x": 736,
-          "y": 1250
-        },
-        "TypeAlias": "Set variable"
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
       },
-      {
-        "Id": "16",
-        "Type": "if",
-        "Label": "SLEEP",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "Expression": [
-            {
-              "BooleanOperator": "",
-              "LeftVariableIsGlobal": false,
-              "LeftVariableName": "",
-              "Operand": "eq",
-              "RightVariable": {
-                "Value": "sleep",
-                "ValueType": "string"
-              }
+      "Ui": {
+        "nodeType": "notification_action",
+        "x": 788,
+        "y": 1525
+      },
+      "TypeAlias": "Notification"
+    },
+    {
+      "Id": "22",
+      "Type": "action",
+      "Label": "Visually indicate ARMING process.",
+      "SuccessTransition": "13",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:cmd/rt:dev/rn:hue/ad:1/sv:scene_ctrl/ad:l4_0",
+      "Service": "scene_ctrl",
+      "ServiceInterface": "cmd.scene.set",
+      "Config": {
+        "DefaultValue": {
+          "Value": "lselect",
+          "ValueType": "string"
+        },
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "ResponseToTopic": "",
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
+      },
+      "Ui": {
+        "nodeType": "",
+        "x": 710,
+        "y": 858
+      },
+      "TypeAlias": "Action"
+    },
+    {
+      "Id": "23",
+      "Type": "if",
+      "Label": "Check if ARMED or AMED PERIMETER",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "Expression": [
+          {
+            "BooleanOperator": "or",
+            "LeftVariableIsGlobal": true,
+            "LeftVariableName": "home.security.mode",
+            "Operand": "eq",
+            "RightVariable": {
+              "Value": "armed",
+              "ValueType": "string"
             }
-          ],
-          "FalseTransition": "18",
-          "TrueTransition": "17"
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 1049,
-          "y": 442
-        },
-        "TypeAlias": "If condition"
-      },
-      {
-        "Id": "17",
-        "Type": "set_variable",
-        "Label": "Set ARMED PERIMETER",
-        "SuccessTransition": "20",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "DefaultValue": {
-            "Value": "armed_perimeter",
-            "ValueType": "string"
           },
-          "Name": "home.security.mode",
-          "UpdateGlobal": true,
-          "UpdateInputMsg": false
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 1004,
-          "y": 902
-        },
-        "TypeAlias": "Set variable"
-      },
-      {
-        "Id": "18",
-        "Type": "if",
-        "Label": "HOME",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "Expression": [
-            {
-              "BooleanOperator": "",
-              "LeftVariableIsGlobal": false,
-              "LeftVariableName": "",
-              "Operand": "eq",
-              "RightVariable": {
-                "Value": "home",
-                "ValueType": "string"
-              }
+          {
+            "BooleanOperator": "",
+            "LeftVariableIsGlobal": true,
+            "LeftVariableName": "home.security.mode",
+            "Operand": "eq",
+            "RightVariable": {
+              "Value": "armed_perimeter",
+              "ValueType": "string"
             }
-          ],
-          "FalseTransition": "",
-          "TrueTransition": "19"
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 1248,
-          "y": 442
-        },
-        "TypeAlias": "If condition"
+          }
+        ],
+        "FalseTransition": "",
+        "TrueTransition": "26"
       },
-      {
-        "Id": "19",
-        "Type": "set_variable",
-        "Label": "Set DISARMED",
-        "SuccessTransition": "25",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "DefaultValue": {
-            "Value": "disarmed",
-            "ValueType": "string"
+      "Ui": {
+        "nodeType": "",
+        "x": 456,
+        "y": 701
+      },
+      "TypeAlias": "If condition"
+    },
+    {
+      "Id": "24",
+      "Type": "action",
+      "Label": "Publish timeline",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:cmd/rt:app/rn:time_owl/ad:1",
+      "Service": "time_owl",
+      "ServiceInterface": "cmd.timeline.set",
+      "Config": {
+        "DefaultValue": {
+          "Value": {
+            "message_en": "The Home is ARMED",
+            "message_no": "-",
+            "sender": "flow"
           },
-          "Name": "home.security.mode",
-          "UpdateGlobal": true,
-          "UpdateInputMsg": false
+          "ValueType": "str_map"
         },
-        "Ui": {
-          "nodeType": "",
-          "x": 1242,
-          "y": 904
-        },
-        "TypeAlias": "Set variable"
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
       },
-      {
-        "Id": "20",
-        "Type": "action",
-        "Label": "Push notification",
-        "SuccessTransition": "24",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:evt/rt:app/rn:kind_owl/ad:1",
-        "Service": "kind-owl",
-        "ServiceInterface": "evt.notification.report",
-        "Config": {
-          "DefaultValue": {
-            "Value": {
-              "EventName": "custom",
-              "MessageContent": "The Home is ARMED",
-              "SiteId": ""
-            },
-            "ValueType": "object"
+      "Ui": {
+        "nodeType": "timeline_action",
+        "x": 758,
+        "y": 1728
+      },
+      "TypeAlias": "Timeline"
+    },
+    {
+      "Id": "25",
+      "Type": "action",
+      "Label": "Publish timeline",
+      "SuccessTransition": "",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:cmd/rt:app/rn:time_owl/ad:1",
+      "Service": "time_owl",
+      "ServiceInterface": "cmd.timeline.set",
+      "Config": {
+        "DefaultValue": {
+          "Value": {
+            "message_en": "The Home is DISARMED",
+            "message_no": "-",
+            "sender": "flow"
           },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
+          "ValueType": "str_map"
         },
-        "Ui": {
-          "nodeType": "notification_action",
-          "x": 788,
-          "y": 1525
-        },
-        "TypeAlias": "Notification"
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
       },
-      {
-        "Id": "22",
-        "Type": "action",
-        "Label": "Visually indicate ARMING process.",
-        "SuccessTransition": "13",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:cmd/rt:dev/rn:hue/ad:1/sv:scene_ctrl/ad:l4_0",
-        "Service": "scene_ctrl",
-        "ServiceInterface": "cmd.scene.set",
-        "Config": {
-          "DefaultValue": {
-            "Value": "lselect",
-            "ValueType": "string"
+      "Ui": {
+        "nodeType": "timeline_action",
+        "x": 1223,
+        "y": 1177
+      },
+      "TypeAlias": "Timeline"
+    },
+    {
+      "Id": "26",
+      "Type": "action",
+      "Label": "Voice over",
+      "SuccessTransition": "27",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "pt:j1/mt:cmd/rt:dev/rn:sonos/ad:1/sv:media_player/ad:347E5C3E9B2601400",
+      "Service": "media_player",
+      "ServiceInterface": "cmd.audioclip.play",
+      "Config": {
+        "DefaultValue": {
+          "Value": {
+            "streamUrl": "http://192.168.86.43/audio/fridge.mp3",
+            "volume": 40
           },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "ResponseToTopic": "",
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
+          "ValueType": "object"
         },
-        "Ui": {
-          "nodeType": "",
-          "x": 710,
-          "y": 858
-        },
-        "TypeAlias": "Action"
+        "IsVariableGlobal": false,
+        "Props": {},
+        "RegisterAsVirtualService": false,
+        "ResponseToTopic": "",
+        "VariableName": "",
+        "VirtualServiceGroup": "",
+        "VirtualServiceProps": {}
       },
-      {
-        "Id": "23",
-        "Type": "if",
-        "Label": "Check if ARMED or AMED PERIMETER",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "Expression": [
-            {
-              "BooleanOperator": "or",
-              "LeftVariableIsGlobal": true,
-              "LeftVariableName": "home.security.mode",
-              "Operand": "eq",
-              "RightVariable": {
-                "Value": "armed",
-                "ValueType": "string"
-              }
-            },
-            {
-              "BooleanOperator": "",
-              "LeftVariableIsGlobal": true,
-              "LeftVariableName": "home.security.mode",
-              "Operand": "eq",
-              "RightVariable": {
-                "Value": "armed_perimeter",
-                "ValueType": "string"
-              }
-            }
-          ],
-          "FalseTransition": "",
-          "TrueTransition": "26"
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 456,
-          "y": 701
-        },
-        "TypeAlias": "If condition"
+      "Ui": {
+        "nodeType": "",
+        "x": 438,
+        "y": 902
       },
-      {
-        "Id": "24",
-        "Type": "action",
-        "Label": "Publish timeline",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:cmd/rt:app/rn:time_owl/ad:1",
-        "Service": "time_owl",
-        "ServiceInterface": "cmd.timeline.set",
-        "Config": {
-          "DefaultValue": {
-            "Value": {
-              "message_en": "The Home is ARMED",
-              "message_no": "-",
-              "sender": "flow"
-            },
-            "ValueType": "str_map"
-          },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
-        },
-        "Ui": {
-          "nodeType": "timeline_action",
-          "x": 758,
-          "y": 1728
-        },
-        "TypeAlias": "Timeline"
+      "TypeAlias": "Action"
+    },
+    {
+      "Id": "27",
+      "Type": "rate_limit",
+      "Label": "Remove duplicates",
+      "SuccessTransition": "9",
+      "TimeoutTransition": "",
+      "ErrorTransition": "",
+      "Address": "",
+      "Service": "",
+      "ServiceInterface": "",
+      "Config": {
+        "Action": "skip",
+        "Limit": 1,
+        "TimeInterval": 40
       },
-      {
-        "Id": "25",
-        "Type": "action",
-        "Label": "Publish timeline",
-        "SuccessTransition": "",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:cmd/rt:app/rn:time_owl/ad:1",
-        "Service": "time_owl",
-        "ServiceInterface": "cmd.timeline.set",
-        "Config": {
-          "DefaultValue": {
-            "Value": {
-              "message_en": "The Home is DISARMED",
-              "message_no": "-",
-              "sender": "flow"
-            },
-            "ValueType": "str_map"
-          },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
-        },
-        "Ui": {
-          "nodeType": "timeline_action",
-          "x": 1223,
-          "y": 1177
-        },
-        "TypeAlias": "Timeline"
+      "Ui": {
+        "nodeType": "",
+        "x": 272,
+        "y": 1118
       },
-      {
-        "Id": "26",
-        "Type": "action",
-        "Label": "Voice over",
-        "SuccessTransition": "27",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "pt:j1/mt:cmd/rt:dev/rn:sonos/ad:1/sv:media_player/ad:put_your_sonos_device_address_here",
-        "Service": "media_player",
-        "ServiceInterface": "cmd.audioclip.play",
-        "Config": {
-          "DefaultValue": {
-            "Value": {
-              "streamUrl": "http://192.168.86.43/audio/alarm_msg.mp3",
-              "volume": 40
-            },
-            "ValueType": "object"
-          },
-          "IsVariableGlobal": false,
-          "Props": {},
-          "RegisterAsVirtualService": false,
-          "ResponseToTopic": "",
-          "VariableName": "",
-          "VirtualServiceGroup": "",
-          "VirtualServiceProps": {}
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 438,
-          "y": 902
-        },
-        "TypeAlias": "Action"
-      },
-      {
-        "Id": "27",
-        "Type": "rate_limit",
-        "Label": "Remove duplicates",
-        "SuccessTransition": "9",
-        "TimeoutTransition": "",
-        "ErrorTransition": "",
-        "Address": "",
-        "Service": "",
-        "ServiceInterface": "",
-        "Config": {
-          "Action": "skip",
-          "Limit": 1,
-          "TimeInterval": 40
-        },
-        "Ui": {
-          "nodeType": "",
-          "x": 272,
-          "y": 1118
-        },
-        "TypeAlias": "Rate limit"
-      }
-    ],
-    "Settings": null,
-    "IsDisabled": false,
-    "IsDefault": false,
-    "ParallelExecution": "keep_first"
-  }
+      "TypeAlias": "Rate limit"
+    }
+  ],
+  "Settings": null,
+  "IsDisabled": false,
+  "IsDefault": false,
+  "ParallelExecution": "keep_first"
+}
